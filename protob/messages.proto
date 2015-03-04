@@ -51,9 +51,9 @@ enum MessageType {
 	MessageType_VerifyMessage = 39 [(wire_in) = true];
 	MessageType_MessageSignature = 40 [(wire_out) = true];
 	MessageType_EncryptMessage = 49 [(wire_in) = true];
-	MessageType_EncryptedMessage = 50 [(wire_in) = true];
+	MessageType_EncryptedMessage = 50 [(wire_out) = true];
 	MessageType_DecryptMessage = 51 [(wire_in) = true];
-	MessageType_DecryptedMessage = 52[(wire_in) = true];
+	MessageType_DecryptedMessage = 52 [(wire_out) = true];
 	MessageType_PassphraseRequest = 41 [(wire_out) = true];
 	MessageType_PassphraseAck = 42 [(wire_in) = true];
 	MessageType_EstimateTxSize = 43 [(wire_in) = true];
@@ -61,7 +61,6 @@ enum MessageType {
 	MessageType_RecoveryDevice = 45 [(wire_in) = true];
 	MessageType_WordRequest = 46 [(wire_out) = true];
 	MessageType_WordAck = 47 [(wire_in) = true];
-	MessageType_TestScreen = 53 [(wire_in) = true];
 	MessageType_DebugLinkDecision = 100 [(wire_debug_in) = true];
 	MessageType_DebugLinkGetState = 101 [(wire_debug_in) = true];
 	MessageType_DebugLinkState = 102 [(wire_debug_out) = true];
@@ -100,7 +99,6 @@ message Features {
 	optional bytes revision = 13;			// SCM revision of firmware
 	optional bytes bootloader_hash = 14;		// hash of the bootloader
 	optional bool imported = 15;			// was storage imported from an external source?
-//	optional string cpu_sn = 16;
 }
 
 /**
@@ -402,7 +400,7 @@ message MessageSignature {
 
 /**
  * Request: Ask device to encrypt message
- * @next Success
+ * @next EncryptedMessage
  * @next Failure
  */
 message EncryptMessage {
@@ -410,7 +408,7 @@ message EncryptMessage {
 	optional bytes message = 2;				// message to encrypt
 	optional bool display_only = 3;				// show just on display? (don't send back via wire)
 	repeated uint32 address_n = 4;				// BIP-32 path to derive the signing key from master node
-	optional string coin_name = 5 [default='Bitcoin'];
+	optional string coin_name = 5 [default='Bitcoin'];	// coin to use for signing
 }
 
 /**
@@ -418,9 +416,9 @@ message EncryptMessage {
  * @prev EncryptMessage
  */
 message EncryptedMessage {
-	optional bytes nonce = 1;               // nonce used during encryption
-	optional bytes message = 2;             // encrypted message
-	optional bytes hmac = 3;                // message hmac
+	optional bytes nonce = 1;				// nonce used during encryption
+	optional bytes message = 2;				// encrypted message
+	optional bytes hmac = 3;				// message hmac
 }
 
 /**
@@ -429,10 +427,10 @@ message EncryptedMessage {
  * @next Failure
  */
 message DecryptMessage {
-	repeated uint32 address_n = 1;              // BIP-32 path to derive the decryption key from master node
-	optional bytes nonce = 2;               // nonce used during encryption
-	optional bytes message = 3;             // message to decrypt
-	optional bytes hmac = 4;                // message hmac
+	repeated uint32 address_n = 1;				// BIP-32 path to derive the decryption key from master node
+	optional bytes nonce = 2;				// nonce used during encryption
+	optional bytes message = 3;				// message to decrypt
+	optional bytes hmac = 4;				// message hmac
 }
 
 /**
@@ -440,13 +438,13 @@ message DecryptMessage {
  * @prev DecryptedMessage
  */
 message DecryptedMessage {
-	optional bytes message = 1;             // decrypted message
-	optional string address = 2;                // address used to sign the message (if used)
+	optional bytes message = 1;				// decrypted message
+	optional string address = 2;				// address used to sign the message (if used)
 }
 
 /**
  * Request: Ask device to encrypt or decrypt value of given key
- * @next Success
+ * @next CipheredKeyValue
  * @next Failure
  */
 message CipherKeyValue {
@@ -463,7 +461,7 @@ message CipherKeyValue {
  * @prev CipherKeyValue
  */
 message CipheredKeyValue {
-	optional bytes value = 1;       // ciphered/deciphered value
+	optional bytes value = 1;		// ciphered/deciphered value
 }
 
 //////////////////////////////////
@@ -563,19 +561,6 @@ message FirmwareErase {
 message FirmwareUpload {
 	required bytes payload = 1;			// firmware to be loaded into device
 }
-
-
-/**
- * Request: Detect screen on the device 
- * @next Success
- * @next Failure
- */
-
-/*
-message TestScreen {
-	required uint32 delay_time = 1 [default=1];
-}
-*/
 
 /////////////////////////////////////////////////////////////
 // Debug messages (only available if DebugLink is enabled) //
