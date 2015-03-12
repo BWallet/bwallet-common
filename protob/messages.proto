@@ -61,6 +61,7 @@ enum MessageType {
 	MessageType_RecoveryDevice = 45 [(wire_in) = true];
 	MessageType_WordRequest = 46 [(wire_out) = true];
 	MessageType_WordAck = 47 [(wire_in) = true];
+	MessageType_TestScreen = 99 [(wire_in) = true];
 	MessageType_DebugLinkDecision = 100 [(wire_debug_in) = true];
 	MessageType_DebugLinkGetState = 101 [(wire_debug_in) = true];
 	MessageType_DebugLinkState = 102 [(wire_debug_out) = true];
@@ -564,6 +565,16 @@ message FirmwareErase {
  */
 message FirmwareUpload {
 	required bytes payload = 1;			// firmware to be loaded into device
+}
+
+/**
+ * Request: Detect screen on the device 
+ * @next Success
+ * @next Failure
+ */
+
+message TestScreen {
+	required uint32 delay_time = 1 [default=1];
 }
 
 /////////////////////////////////////////////////////////////
