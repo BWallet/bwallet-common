@@ -1,13 +1,13 @@
 /**
- * Types for TREZOR communication
+ * Types for BWallet communication
  *
  * @author	Marek Palatinus <slush@satoshilabs.com>
  * @version	1.2
  */
 
 // Sugar for easier handling in Java
-option java_package = "com.satoshilabs.trezor.protobuf";
-option java_outer_classname = "TrezorType";
+option java_package = "com.bdx.bwallet.protobuf";
+option java_outer_classname = "BWalletType";
 
 import "google/protobuf/descriptor.proto";
 
@@ -15,10 +15,10 @@ import "google/protobuf/descriptor.proto";
  * Options for specifying message direction and type of wire (normal/debug)
  */
 extend google.protobuf.EnumValueOptions {
-	optional bool wire_in = 50002;		// message can be transmitted via wire from PC to TREZOR
-	optional bool wire_out = 50003;		// message can be transmitted via wire from TREZOR to PC
-	optional bool wire_debug_in = 50004;	// message can be transmitted via debug wire from PC to TREZOR
-	optional bool wire_debug_out = 50005;	// message can be transmitted via debug wire from TREZOR to PC
+	optional bool wire_in = 50002;		// message can be transmitted via wire from PC to BWallet
+	optional bool wire_out = 50003;		// message can be transmitted via wire from BWallet to PC
+	optional bool wire_debug_in = 50004;	// message can be transmitted via debug wire from PC to BWallet
+	optional bool wire_debug_out = 50005;	// message can be transmitted via debug wire from BWallet to PC
 }
 
 /**

@@ -1,13 +1,13 @@
 /**
- * Storage area of TREZOR
+ * Storage area of BWallet
  *
  * @author	Marek Palatinus <slush@satoshilabs.com>
  * @version	1
  */
 
 // Sugar for easier handling in Java
-option java_package = "com.satoshilabs.trezor.protobuf";
-option java_outer_classname = "TrezorStorage";
+option java_package = "com.bdx.bwallet.protobuf";
+option java_outer_classname = "BWalletStorage";
 
 import "types.proto";
 

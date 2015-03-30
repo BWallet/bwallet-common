@@ -1,18 +1,18 @@
 /**
- * Messages for TREZOR communication
+ * Messages for BWallet communication
  *
  * @author	Marek Palatinus <slush@satoshilabs.com>
  * @version	1.2
  */
 
 // Sugar for easier handling in Java
-option java_package = "com.satoshilabs.trezor.protobuf";
-option java_outer_classname = "TrezorMessage";
+option java_package = "com.bdx.bwallet.protobuf";
+option java_outer_classname = "BWalletMessage";
 
 import "types.proto";
 
 /**
- * Mapping between Trezor wire identifier (uint) and a protobuf message
+ * Mapping between BWallet wire identifier (uint) and a protobuf message
  */
 enum MessageType {
 	MessageType_Initialize = 0 [(wire_in) = true];
