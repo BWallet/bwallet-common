@@ -610,6 +610,7 @@ message TestScreen {
 
 /**
  * Response: Return coin label or all labels 
+ * @prev GetAccountLabels
  * @next Success
  * @next Failure
  */
@@ -620,7 +621,7 @@ message AccountLabels {
 
 /**
  * Request: Get coin label or all label  
- * @next Success
+ * @next AccountLabels
  * @next Failure
  */
 message GetAccountLabels {
